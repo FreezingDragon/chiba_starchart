@@ -1,0 +1,27 @@
+# 大容量データファイル（起動時に自動ダウンロード）
+star_chart_data/hip_main.dat
+star_chart_data/hip_main.dat.gz
+star_chart_data/de421.bsp
+star_chart_data/milkyway.png
+star_chart_data/constellations.lines.json
+star_chart_data/constellations.json
+
+# キャッシュファイル
+star_chart_data/*.npy
+star_chart_data/*.bak
+star_chart_locations.json
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.env
+venv/
+
+# macOS
+.DS_Store
+
+# PyInstaller
+build/
+dist/
+*.spec
