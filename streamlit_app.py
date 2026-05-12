@@ -75,10 +75,14 @@ def _load_backend():
                 f'存在するファイル: {list((BASE_DIR / "star_chart_data").glob("*"))}'
             )
 
-    _dl('de421.bsp',
-        'https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/planets/de421.bsp')
-    _dl('milkyway.png',
-        'https://raw.githubusercontent.com/Stellarium/stellarium/master/nebulae/default/milkyway.png')
+    # de421.bsp と milkyway.png もリポジトリ同梱
+    for fname in ['de421.bsp', 'milkyway.png']:
+        src = BASE_DIR / 'star_chart_data' / fname
+        dst = DATA_DIR / fname
+        if not dst.exists() and src.exists() and src != dst:
+            shutil.copy2(str(src), str(dst))
+
+    # 星座データのみ外部ダウンロード（小さいファイルのみ）
     _dl('constellations.lines.json',
         'https://raw.githubusercontent.com/ofrohn/d3-celestial/master/data/constellations.lines.json')
     _dl('constellations.json',
