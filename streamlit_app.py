@@ -58,8 +58,23 @@ def _load_backend():
                 os.remove(tmp)
             raise RuntimeError(f'{fname} のダウンロードに失敗: {e}')
 
-    _dl('hip_main.dat',
-        'https://cdsarc.cds.unistra.fr/ftp/I/239/hip_main.dat.gz', gz=True)
+    # hip_main.dat はリポジトリ同梱の gz ファイルから展開
+    hip_gz  = BASE_DIR / 'star_chart_data' / 'hip_main.dat.gz'
+    hip_dat = DATA_DIR / 'hip_main.dat'
+
+    if not hip_dat.exists():
+        if hip_gz.exists():
+            # リポジトリ内の gz から展開
+            with gzip.open(str(hip_gz), 'rb') as fi, open(str(hip_dat), 'wb') as fo:
+                shutil.copyfileobj(fi, fo)
+        else:
+            raise RuntimeError(
+                f'hip_main.dat.gz が見つかりません。\n'
+                f'BASE_DIR={BASE_DIR}\n'
+                f'hip_gz={hip_gz}\n'
+                f'存在するファイル: {list((BASE_DIR / "star_chart_data").glob("*"))}'
+            )
+
     _dl('de421.bsp',
         'https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/planets/de421.bsp')
     _dl('milkyway.png',
